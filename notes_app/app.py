@@ -1,4 +1,6 @@
+import json
 import sqlite3
+import sys
 from pathlib import Path
 
 DB_PATH = Path(__file__).parent / "notes.db"
@@ -35,7 +37,18 @@ def list_notes() -> list[tuple]:
     return rows
 
 
+def count_notes() -> int:
+    conn = get_conn()
+    count = conn.execute("SELECT COUNT(*) FROM notes").fetchone()[0]
+    conn.close()
+    return count
+
+
 if __name__ == "__main__":
     add_note("hello", "world")
-    for row in list_notes():
-        print(row)
+    notes = list_notes()
+    if "--json" in sys.argv:
+        print(json.dumps([{"id": id_, "title": title, "body": body} for id_, title, body in notes]))
+    else:
+        for row in notes:
+            print(row)

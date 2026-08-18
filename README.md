@@ -12,3 +12,5 @@ python3 notes_app/app.py
 ```
 
 Creates `notes_app/notes.db` on first run and prints the stored notes.
+
+Get the total note count with `count_notes()`, e.g. `from notes_app.app import count_notes; count_notes()`.
