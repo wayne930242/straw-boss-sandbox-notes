@@ -19,6 +19,15 @@ def add_note(title: str, body: str) -> int:
     return note_id
 
 
+def delete_note(note_id: int) -> bool:
+    conn = get_conn()
+    cur = conn.execute("DELETE FROM notes WHERE id = ?", (note_id,))
+    conn.commit()
+    deleted = cur.rowcount > 0
+    conn.close()
+    return deleted
+
+
 def list_notes() -> list[tuple]:
     conn = get_conn()
     rows = conn.execute("SELECT id, title, body FROM notes ORDER BY id").fetchall()
